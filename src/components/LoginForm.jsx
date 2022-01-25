@@ -14,10 +14,10 @@ const Username = () => {
   }, [])
 
   return (
-    <div>
+    <>
       <input type="text" id="username" onChange={handleUsernameChange} />
       <p>{username}</p>
-    </div>
+    </>
   )
 }
 
