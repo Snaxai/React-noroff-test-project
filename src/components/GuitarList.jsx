@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
+import { useGuitars } from "../context/GuitarProvider"
+import GuitarListItem from "./GuitarListItem"
 
 const GuitarList = () => {
-  const [guitars, setGuitars] = useState([])
+  const { guitars, favouriteGuitar } = useGuitars()
   const [loading, setLoading] = useState(true)
 
-  const fetchGuitars = () => {
-    fetch("https://dce-noroff-api.herokuapp.com/guitars")
-      .then((response) => response.json())
-      .then((_guitars) => {
-        setGuitars(_guitars)
-        setLoading(false)
-      })
+  const onGuitarClick = (guitar) => {
+    favouriteGuitar(guitar.id)
   }
 
-  useEffect(() => {
-    fetchGuitars()
-  }, [])
+  const totalFavourites = guitars.filter((guitar) => guitar.favourite).length
 
   return (
     <>
       <h1>Guitars</h1>
-      {loading && <p>Loading guitars... </p>}
+      <p>You have {totalFavourites} Favourites</p>
       <ul>
         {guitars.map((guitar) => (
-          <li key={guitar.id}>{guitar.model}</li>
+          <GuitarListItem
+            key={guitar.id}
+            guitar={guitar}
+            onGuitarClick={onGuitarClick}
+          />
         ))}
       </ul>
     </>
